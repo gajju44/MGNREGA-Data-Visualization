@@ -6,8 +6,8 @@ function Footer() {
       
       <div className='flex gap-10 '>
      <a href="#" className=' font-karla text-lg font-medium' onClick={()=> setOpen(false)}>Home</a>
-            <a href="#" className=' font-karla text-lg font-medium' onClick={()=> setOpen(false)}>About</a>
-            <a href="#" className='  font-karla text-lg font-medium' onClick={()=> setOpen(false)}>Contact</a>
+            <a href="https://nrega.dord.gov.in/" className=' font-karla text-lg font-medium' onClick={()=> setOpen(false)}>About</a>
+            {/* <a href="#" className='  font-karla text-lg font-medium' onClick={()=> setOpen(false)}>Contact</a> */}
        </div> 
         <p>Copyright &copy; 2025. All Rights Reserved</p>
 

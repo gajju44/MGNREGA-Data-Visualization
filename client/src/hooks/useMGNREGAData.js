@@ -17,7 +17,7 @@ export function useMGNREGAData(initialState = 'MAHARASHTRA') {
 			setLoading(true);
 			try {
 				const stateParam = (stateName || '').toUpperCase();
-				const url = `http://localhost:5000/api/states/${encodeURIComponent(stateParam)}`;
+				const url = `${import.meta.env.VITE_API_BASE}/api/states/${encodeURIComponent(stateParam)}`;
 				const params = {
 					'filters[district_name]': (districtName || '').toUpperCase(),
 					'filters[fin_year]': finYear,

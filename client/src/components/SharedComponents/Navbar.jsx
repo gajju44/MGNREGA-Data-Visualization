@@ -11,9 +11,9 @@ function Navbar() {
         <img src={Logo} alt="Indian Government Logo" />
         {/* Desktop nav */}
         <div className='hidden md:flex items-center gap-6'>
-          <a href="#" className='text-orange-500 font-karla text-lg font-medium '>Home</a>
-          <a href="#" className='text-orange-500 font-karla text-lg font-medium '>About</a>
-          <a href="#" className='text-orange-500 font-karla text-lg font-medium '>Contact</a>
+          <a href="/" className='text-orange-500 font-karla text-lg font-medium '>Home</a>
+          <a href="https://nrega.dord.gov.in/" className='text-orange-500 font-karla text-lg font-medium '>About</a>
+          {/* <a href="#" className='text-orange-500 font-karla text-lg font-medium '>Contact</a> */}
           <a href="#" className='px-4 py-1 text-black flex font-karla text-lg items-center justify-center gap-2 font-medium bg-orange-500 rounded-full'><Globe size={18}/>English</a>
         </div>
         {/* Mobile hamburger */}
@@ -35,9 +35,9 @@ function Navbar() {
             </button>
           </div>
           <nav className='flex flex-col items-center gap-4 p-4'>
-            <a href="#" className=' text-black font-karla text-lg font-medium' onClick={()=> setOpen(false)}>Home</a>
-            <a href="#" className=' text-black font-karla text-lg font-medium' onClick={()=> setOpen(false)}>About</a>
-            <a href="#" className=' text-black font-karla text-lg font-medium' onClick={()=> setOpen(false)}>Contact</a>
+            <a href="/" className=' text-black font-karla text-lg font-medium' onClick={()=> setOpen(false)}>Home</a>
+            <a href="https://nrega.dord.gov.in/" className=' text-black font-karla text-lg font-medium' onClick={()=> setOpen(false)}>About</a>
+            {/* <a href="#" className=' text-black font-karla text-lg font-medium' onClick={()=> setOpen(false)}>Contact</a> */}
             <a href="#" className='px-4 py-2 mt-2 text-black flex font-karla text-lg items-center justify-center gap-2 font-medium bg-orange-500 rounded-full' onClick={()=> setOpen(false)}><Globe size={18}/>English</a>
           </nav>
         </div>
