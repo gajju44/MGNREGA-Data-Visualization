@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'legriffeplain';
+  src: url('./assets/fonts/legriffeplain.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'shangrilanf';
+  src: url('./assets/fonts/ShangriLaNF.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+body{
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    background-color: #F2E0C7;
+}
+*{
+    color: #41462F;
+}
+
+.font-karla {
+    font-family: 'Karla', sans-serif;
+}
