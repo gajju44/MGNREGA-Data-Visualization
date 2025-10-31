@@ -4,12 +4,14 @@ import axios from 'axios';
 import { MAHARASHTRA_DISTRICTS, FIN_YEAR_OPTIONS, findBestDistrictMatch } from '../../constants/mgnrega';
 import Filters from './Filters';
 import DataTable from './DataTable';
+import { useLanguage } from '../../i18n/LanguageProvider.jsx'
 
 function DistrictDashboard() {
+  const { t } = useLanguage();
   const [stateName, setStateName] = useState('MAHARASHTRA');
   const [districtName, setDistrictName] = useState(''); 
   const [finYear, setFinYear] = useState(FIN_YEAR_OPTIONS[FIN_YEAR_OPTIONS.length - 1]);
-  const [detectMessage, setDetectMessage] = useState('Detecting location…');
+  const [detectMessage, setDetectMessage] = useState(t('dd_detecting_location'));
   const [isDetecting, setIsDetecting] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -39,7 +41,7 @@ function DistrictDashboard() {
       if (!geo?.coords) return;
       try {
         setIsDetecting(true);
-        setDetectMessage('Detecting location…');
+        setDetectMessage(t('dd_detecting_location'));
         const { latitude, longitude } = geo.coords;
         const addr = await reverseGeocode(latitude, longitude);
         const detectedState = addr.state || '';
@@ -48,29 +50,29 @@ function DistrictDashboard() {
           setStateName('MAHARASHTRA');
           const matched = findBestDistrictMatch(detectedDistrict);
           setDistrictName(matched ? matched.toUpperCase() : '');
-          setDetectMessage(matched ? `Detected Maharashtra • District: ${matched}` : 'Detected Maharashtra');
+          setDetectMessage(matched ? t('dd_detected_maha_with', { district: matched }) : t('dd_detected_maha'));
         } else {
           setStateName('MAHARASHTRA');
           setDistrictName('');
-          setDetectMessage('Outside Maharashtra — defaulting to Maharashtra');
+          setDetectMessage(t('dd_outside_maha'));
         }
       } catch {
-        setDetectMessage('Could not detect location');
+        setDetectMessage(t('dd_could_not_detect'));
       } finally {
         setIsDetecting(false);
       }
     };
     fetchAddress();
-  }, [geo?.coords]);
+  }, [geo?.coords, t]);
 
   const handleRedetect = async () => {
     if (!geo?.coords) {
-      setDetectMessage('Waiting for geolocation permission…');
+      setDetectMessage(t('dd_waiting_geo'));
       return;
     }
     try {
       setIsDetecting(true);
-      setDetectMessage('Detecting location…');
+      setDetectMessage(t('dd_detecting_location'));
       const { latitude, longitude } = geo.coords;
       const addr = await reverseGeocode(latitude, longitude);
       const detectedState = addr.state || '';
@@ -79,14 +81,14 @@ function DistrictDashboard() {
         setStateName('MAHARASHTRA');
         const matched = findBestDistrictMatch(detectedDistrict);
         setDistrictName(matched ? matched.toUpperCase() : '');
-        setDetectMessage(matched ? `Detected Maharashtra • District: ${matched}` : 'Detected Maharashtra');
+        setDetectMessage(matched ? t('dd_detected_maha_with', { district: matched }) : t('dd_detected_maha'));
       } else {
         setStateName('MAHARASHTRA');
         setDistrictName('');
-        setDetectMessage('Outside Maharashtra — defaulting to Maharashtra');
+        setDetectMessage(t('dd_outside_maha'));
       }
     } catch {
-      setDetectMessage('Could not detect location');
+      setDetectMessage(t('dd_could_not_detect'));
     } finally {
       setIsDetecting(false);
     }
@@ -136,13 +138,11 @@ function DistrictDashboard() {
   return (
     <div className="flex flex-col gap-10 py-10">
       <div className="flex flex-col gap-3 items-center">
-        <h2 className="font-shangrilanf text-4xl md:text-6xl lg:text-7xl lg:max-w-3xl  text-center">Discover How Your District is Growing with MGNREGA</h2>
-        <p className="w-full max-w-6xl text-center text-sm md:text-base lg:text-lg font-karla">
-          Get real-time insights into how <span className="font-bold ">MGNREGA</span> is transforming your district. View transparent data on jobs created, funds utilized, and assets built, empowering citizens with clear and open access to rural development information.
-        </p>
+        <h2 className="font-shangrilanf text-4xl md:text-6xl lg:text-7xl lg:max-w-3xl  text-center">{t('dd_title')}</h2>
+        <p className="w-full max-w-6xl text-center text-sm md:text-base lg:text-lg font-karla">{t('dd_desc')}</p>
         <div className="mt-2 text-sm font-karla bg-[#FFF7E9] border border-orange-900/30 rounded-md px-3 py-2 flex items-center gap-3">
-          <span><span className="font-semibold">Location:</span> {detectMessage}</span>
-          <button onClick={handleRedetect} disabled={isDetecting} className="px-3 py-1 rounded-md bg-[#DD740B] text-white hover:bg-[#f59b4a] disabled:opacity-60">{isDetecting ? 'Detecting…' : 'Use my location'}</button>
+          <span><span className="font-semibold">{t('dd_location_label')}</span> {detectMessage}</span>
+          <button onClick={handleRedetect} disabled={isDetecting} className="px-3 py-1 rounded-md bg-[#DD740B] text-white hover:bg-[#f59b4a] disabled:opacity-60">{isDetecting ? t('dd_detecting') : t('dd_use_my_location')}</button>
         </div>
       </div>
 
