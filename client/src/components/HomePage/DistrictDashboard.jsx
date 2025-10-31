@@ -5,6 +5,7 @@ import { MAHARASHTRA_DISTRICTS, FIN_YEAR_OPTIONS, findBestDistrictMatch } from '
 import Filters from './Filters';
 import DataTable from './DataTable';
 import { useLanguage } from '../../i18n/LanguageProvider.jsx'
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver.js'
 
 function DistrictDashboard() {
   const { t } = useLanguage();
@@ -19,6 +20,12 @@ function DistrictDashboard() {
   const [pageSize, setPageSize] = useState(20);
   const [hasMore, setHasMore] = useState(false);
   const [totalCount, setTotalCount] = useState(null);
+
+ 
+  const [headerRef, headerIntersected] = useIntersectionObserver({ threshold: 0.2 });
+  const [locationRef, locationIntersected] = useIntersectionObserver({ threshold: 0.2 });
+  const [filtersRef, filtersIntersected] = useIntersectionObserver({ threshold: 0.1 });
+  const [tableRef, tableIntersected] = useIntersectionObserver({ threshold: 0.1 });
 
   // Geolocation 
   const geo = useGeolocated({
@@ -136,40 +143,48 @@ function DistrictDashboard() {
   const totalPages = Number.isFinite(totalCount) ? Math.max(1, Math.ceil(totalCount / pageSize)) : (hasMore ? currentPage + 1 : currentPage);
 
   return (
-    <div className="flex flex-col gap-10 py-10">
-      <div className="flex flex-col gap-3 items-center">
-        <h2 className="font-shangrilanf text-4xl md:text-6xl lg:text-7xl lg:max-w-3xl  text-center">{t('dd_title')}</h2>
-        <p className="w-full max-w-6xl text-center text-sm md:text-base lg:text-lg font-karla">{t('dd_desc')}</p>
-        <div className="mt-2 text-sm font-karla bg-[#FFF7E9] border border-orange-900/30 rounded-md px-3 py-2 flex items-center gap-3">
+    <div id="data" className="flex flex-col gap-10 py-10">
+      <div ref={headerRef} className="flex flex-col gap-3 items-center">
+        <h2 className={`font-shangrilanf text-4xl md:text-6xl lg:text-7xl lg:max-w-3xl text-center ${headerIntersected ? 'fade-in-up' : 'opacity-0'}`}>
+          {t('dd_title')}
+        </h2>
+        <p className={`w-full max-w-6xl text-center text-sm md:text-base lg:text-lg font-karla ${headerIntersected ? 'fade-in-up delay-200' : 'opacity-0'}`}>
+          {t('dd_desc')}
+        </p>
+        <div ref={locationRef} className={`mt-2 text-sm font-karla bg-[#FFF7E9] border border-orange-900/30 rounded-md px-3 py-2 flex items-center gap-3 ${locationIntersected ? 'fade-in-scale delay-300' : 'opacity-0'}`}>
           <span><span className="font-semibold">{t('dd_location_label')}</span> {detectMessage}</span>
           <button onClick={handleRedetect} disabled={isDetecting} className="px-3 py-1 rounded-md bg-[#DD740B] text-white hover:bg-[#f59b4a] disabled:opacity-60">{isDetecting ? t('dd_detecting') : t('dd_use_my_location')}</button>
         </div>
       </div>
 
       {/* Filters */}
-      <Filters
-        stateName={stateName}
-        setStateName={setStateName}
-        districtName={districtName}
-        setDistrictName={setDistrictName}
-        finYear={finYear}
-        setFinYear={setFinYear}
-        districts={MAHARASHTRA_DISTRICTS}
-        finYears={FIN_YEAR_OPTIONS}
-      />
+      <div ref={filtersRef} className={filtersIntersected ? 'fade-in-up' : 'opacity-0'}>
+        <Filters
+          stateName={stateName}
+          setStateName={setStateName}
+          districtName={districtName}
+          setDistrictName={setDistrictName}
+          finYear={finYear}
+          setFinYear={setFinYear}
+          districts={MAHARASHTRA_DISTRICTS}
+          finYears={FIN_YEAR_OPTIONS}
+        />
+      </div>
       
 
       {/* Data Section */}
-      <DataTable
-        data={data}
-        loading={loading}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        hasMore={hasMore}
-        totalPages={totalPages}
-      />
+      <div ref={tableRef} className={tableIntersected ? 'fade-in-up' : 'opacity-0'}>
+        <DataTable
+          data={data}
+          loading={loading}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          hasMore={hasMore}
+          totalPages={totalPages}
+        />
+      </div>
     </div>
   );
 }

@@ -9,7 +9,7 @@ function DataTable({ data, loading, pageSize, setPageSize, currentPage, setCurre
 		<div className="bg-green-50 rounded-xl p-6">
 			<div className="flex flex-wrap gap-2 items-center justify-between pb-4 text-gray-700 font-karla">
 				<div className="font-bold">{t('table_title', { count: data.length })}</div>
-				<div className="flex items-center gap-4">
+				<div className="flex flex-wrap items-center gap-4">
 					
 					<div className="flex items-start justify-center gap-2 ">
 						<button className="px-3 py-1 rounded border border-green-300 text-green-800 disabled:opacity-50" disabled={currentPage===1} onClick={()=> setCurrentPage(p=> Math.max(1, p-1))}>{t('table_prev')}</button>
